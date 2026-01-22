@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Non-Custodial Eth Wallet",
+  "version": "1.0.0",
+  "description": "Secure, non-custodial Ethereum wallet extension.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

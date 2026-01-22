@@ -1,0 +1,835 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EtherVault - Capstone Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* 1. THE SETUP - CYBER THEME */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0f172a; /* Slate 900 */
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 0;
+  place-items: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.slide-container {
+  align-items: center;
+  background-color: #020617; /* Slate 950 */
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.1); /* Indigo glow */
+  display: flex;
+  flex-direction: column;
+  height: 720px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px;
+  position: relative;
+  width: 1280px;
+}
+
+/* Background Accents */
+.slide-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.slide-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. TYPOGRAPHY */
+
+h1, h2, h3 {
+  color: #f8fafc;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+h1 {
+  font-size: 80px;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.slide-title {
+  font-size: 42px;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: left;
+  border-left: 5px solid #6366f1;
+  padding-left: 20px;
+}
+
+h3 {
+  font-size: 24px;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+p, li {
+  color: #cbd5e1; /* Slate 300 */
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 24px;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+/* 3. LAYOUT UTILITIES */
+
+.content-area {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.two-column {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  width: 100%;
+}
+
+.two-column.tiled {
+    align-items: stretch;
+}
+
+.two-column.tiled > div {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 40px;
+}
+
+.image-wrapper {
+  border-radius: 12px;
+  height: 400px;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #334155;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  
+  /* Flexbox for centering SVGs */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  position: relative;
+}
+
+/* General SVG Styles inside wrappers */
+.image-wrapper svg {
+    width: 60%;
+    height: 60%;
+    stroke: #6366f1; /* Default brand color */
+}
+
+/* 4. COMPONENT STYLES */
+
+/* Tiled Icons */
+.tiled-content {
+  align-items: stretch;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
+}
+
+.tile {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 30px;
+  flex: 1;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.tile .icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Bullet Lists */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+}
+
+li::before {
+  content: '058'; /* fa-circle-check */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: #6366f1;
+  position: absolute;
+  left: 0;
+  top: 4px;
+}
+
+/* Code Blocks */
+.code-block {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #a5b4fc;
+    overflow-x: auto;
+    position: relative;
+}
+.code-block::before {
+    content: 'javascript';
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 10px;
+    color: #475569;
+    text-transform: uppercase;
+}
+
+/* Bleed Image Layout */
+.slide-container.bleed-image-layout {
+  align-items: start;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+}
+
+.slide-container.bleed-image-layout > .content-container {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.slide-container.bleed-image-layout > .image-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  border-left: 1px solid #334155;
+}
+
+.slide-container.bleed-image-layout > .image-container svg {
+    width: 80%;
+    height: 80%;
+    stroke: #6366f1;
+}
+
+/* Timeline */
+.timeline-layout {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.timeline-layout::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #334155;
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: 22%;
+}
+
+.timeline-dot {
+  width: 50px;
+  height: 50px;
+  background: #0f172a;
+  border: 2px solid #6366f1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Q&A */
+.qa-layout {
+    text-align: center;
+}
+.qa-layout .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+    text-align: left;
+}
+.qa-layout .team-member h4 {
+    color: #f8fafc;
+    margin: 0;
+    font-size: 20px;
+}
+.qa-layout .team-member p {
+    color: #94a3b8;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Custom Glass Card for Slide 16 */
+.glass-card-demo {
+    width: 300px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+}
+.glass-card-demo::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 100px;
+    height: 100px;
+    background: #6366f1;
+    filter: blur(40px);
+    opacity: 0.5;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title (Replaced bg image with CSS gradient) -->
+<div class="slide-container full-bg-image" id="slide1" style="background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%);">
+    <div class="content-area" style="text-align: center;">
+        <h1 style="font-size: 90px; text-shadow: 0 0 30px rgba(99,102,241,0.5);">EtherVault</h1>
+        <p class="subtitle" style="font-size: 32px; color: #a5b4fc; letter-spacing: 2px; margin-bottom: 40px;">TRUST NO ONE. SECURE EVERYTHING.</p>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 20px 40px; border-radius: 50px; border: 1px solid #334155;">
+            <p style="margin: 0; color: #fff; font-size: 18px;">GOPINATH PANIGARHI &bull; OMKAR BHUYAN &bull; ADITYA RANJAN PADHI &bull; MONALISA PATRA</p>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 2: The Problem -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">The Centralized Web3 Problem</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul>
+                    <li><strong>"Not Your Keys, Not Your Coins":</strong> The defining lesson of the last crypto cycle.</li>
+                    <li><strong>Exchange Collapses:</strong> The FTX fallout exposed the dangers of trusting centralized custodians with user funds.</li>
+                    <li><strong>Security Vulnerabilities:</strong> Centralized databases are honeypots for hackers, resulting in billions lost annually.</li>
+                    <li><strong>Loss of Sovereignty:</strong> Users are blocked from their own assets during maintenance or bank runs.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <!-- SVG: Broken Chain -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    <line x1="12" y1="12" x2="12" y2="12" stroke-width="4" stroke="#ef4444"></line>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 3: The Solution -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">The Solution: True Self-Custody</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <i class="fa-solid fa-building-columns" style="font-size: 40px; color: #ef4444; margin-bottom: 20px;"></i>
+                <h3>Custodial (Banks/CEX)</h3>
+                <p>A third party holds your private keys. You have an "IOU" for your money, not the money itself. Vulnerable to censorship and insolvency.</p>
+            </div>
+            <div>
+                <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: #10b981; margin-bottom: 20px;"></i>
+                <h3>Non-Custodial (EtherVault)</h3>
+                <p>You hold the keys. The wallet is just an interface to the blockchain. Even if EtherVault disappears, your funds exist on-chain.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 4: Project Goals -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Core Project Goals</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-user-secret"></i></div>
+                <h3>Security First</h3>
+                <p>Zero-knowledge architecture. Private keys never leave the local device in unencrypted form.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+                <h3>Performance</h3>
+                <p>Built on Manifest V3 for a lightweight footprint and background service worker efficiency.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-hand-pointer"></i></div>
+                <h3>Usability</h3>
+                <p>A "Glassmorphism" UI that simplifies complex blockchain interactions for the end-user.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 5: Architecture (Bleed) -->
+<div class="slide-container bleed-image-layout" id="slide5">
+    <div class="content-container">
+        <h2 style="font-size: 48px; margin-bottom: 30px;">High-Level Architecture</h2>
+        <p><strong>1. React Popup (UI):</strong> The visual interface where users interact, sign transactions, and view balances.</p>
+        <p><strong>2. Background Service Worker:</strong> The "Brain" of the wallet. Listens for events, manages state, and handles connection logic.</p>
+        <p><strong>3. Chrome Storage:</strong> Encrypted local vault storage for persistent data.</p>
+        <p><strong>4. Blockchain Provider:</strong> JSON-RPC connection to Ethereum Mainnet/Testnet.</p>
+    </div>
+    <div class="image-container">
+        <!-- SVG: Architecture Diagram -->
+        <svg viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="2">
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#6366f1" />
+                </marker>
+            </defs>
+            <!-- Popup -->
+            <rect x="50" y="50" width="100" height="80" rx="8" stroke="#a855f7" stroke-width="2" fill="rgba(168, 85, 247, 0.1)"/>
+            <text x="100" y="95" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-size="14" stroke="none">UI Popup</text>
+            <!-- Service Worker -->
+            <rect x="50" y="180" width="100" height="80" rx="8" stroke="#6366f1" stroke-width="2" fill="rgba(99, 102, 241, 0.1)"/>
+            <text x="100" y="225" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-size="14" stroke="none">Service Worker</text>
+            <!-- Blockchain -->
+            <circle cx="300" cy="155" r="50" stroke="#10b981" stroke-width="2" fill="rgba(16, 185, 129, 0.1)"/>
+            <text x="300" y="160" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-size="14" stroke="none">Blockchain</text>
+            <!-- Arrows -->
+            <path d="M100 130 L100 170" marker-end="url(#arrow)" stroke="#475569" />
+            <path d="M150 220 L260 180" marker-end="url(#arrow)" stroke="#475569" />
+        </svg>
+    </div>
+</div>
+
+<!-- SLIDE 6: Tech Stack -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Technology Stack</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-react"></i></div>
+                <h3>React.js + Vite</h3>
+                <p>Fast refresh, component-based UI, and optimized build size for extension constraints.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-ethereum"></i></div>
+                <h3>Ethers.js v6</h3>
+                <p>A secure, compact library for interacting with the Ethereum Blockchain and managing wallets.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-chrome"></i></div>
+                <h3>Manifest V3</h3>
+                <p>The latest Chrome Extension standard, prioritizing privacy, security, and performance.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7: Manifest V3 Deep Dive -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Deep Dive: Manifest V3</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>Legacy (Manifest V2)</h3>
+                <p>Relied on persistent background pages that consumed memory constantly. Prone to security risks via remote code execution.</p>
+            </div>
+            <div>
+                <h3>Modern (Manifest V3)</h3>
+                <p>Uses ephemeral <strong>Service Workers</strong>. They wake up to handle events and terminate when idle. Enforces stricter Content Security Policies (CSP) preventing external script injection.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 8: The No Window Challenge -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">The "No Window" Challenge</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Service Worker Constraints</h3>
+                <p>Service workers don't have access to the DOM or the `window` object. This breaks many standard crypto libraries that rely on `window.crypto`.</p>
+                <h3>The Solution: Polyfills</h3>
+                <p>We implemented a custom `polyfill.js` to inject necessary globals into the Service Worker scope, allowing Ethers.js to function correctly in the background.</p>
+            </div>
+            <div class="image-wrapper">
+                 <!-- SVG: Matrix/Code -->
+                 <svg viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                    <rect x="20" y="20" width="160" height="160" rx="10" stroke="#334155" stroke-width="2" fill="#0f172a"/>
+                    <text x="40" y="60" fill="#f472b6" font-family="monospace" font-size="16" stroke="none">const window =</text>
+                    <text x="170" y="60" fill="#ef4444" font-family="monospace" font-size="16" stroke="none">undefined</text>
+                    <text x="40" y="90" fill="#a5b4fc" font-family="monospace" font-size="14" stroke="none">// Service Worker</text>
+                    <text x="40" y="120" fill="#22d3ee" font-family="monospace" font-size="14" stroke="none">self.crypto</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 9: Security Engineering (Bleed) -->
+<div class="slide-container bleed-image-layout" id="slide9">
+    <div class="content-container">
+        <h2 style="font-size: 48px; margin-bottom: 30px;">Cryptography 101</h2>
+        <p>EtherVault employs a hybrid cryptographic approach:</p>
+        <ul>
+            <li><strong>Symmetric Encryption (AES-GCM):</strong> Used to lock the user's private key in local storage. The key is derived from the user's password.</li>
+            <li><strong>Asymmetric Encryption (Elliptic Curve):</strong> Used for the wallet itself (Public Key for receiving address, Private Key for signing transactions).</li>
+        </ul>
+    </div>
+    <div class="image-container">
+        <!-- SVG: Lock -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="14" height="10" rx="2" ry="2" stroke="#6366f1" fill="rgba(99, 102, 241, 0.1)"></rect>
+            <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#a5b4fc"></path>
+        </svg>
+    </div>
+</div>
+
+<!-- SLIDE 10: CryptoService Class -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title">The CryptoService Class</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Key Derivation (PBKDF2)</h3>
+                <p>We don't use the password directly. We derive a robust encryption key using <strong>PBKDF2</strong> with 100,000 iterations and a random salt.</p>
+                <h3>Encryption (AES-256-GCM)</h3>
+                <p>This key encrypts the wallet data. GCM mode ensures both confidentiality (they can't read it) and integrity (they can't tamper with it).</p>
+            </div>
+            <div>
+                <div class="code-block">
+async deriveKey(password, salt) {
+  const enc = new TextEncoder();
+  const keyMaterial = await window.crypto.subtle.importKey(
+    "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
+  );
+  return window.crypto.subtle.deriveKey(
+    { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+    keyMaterial,
+    { name: "AES-GCM", length: 256 },
+    false, ["encrypt", "decrypt"]
+  );
+}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 11: Key Management -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title">Key Management Strategy</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Zero-Knowledge Architecture</h3>
+                <p>EtherVault servers (if we had them) never see the keys. The derived encryption key exists <strong>only in memory</strong> (RAM) while the user is logged in.</p>
+                <h3>Session Timeout</h3>
+                <p>To prevent memory dumping attacks, the key is wiped from memory after 15 minutes of inactivity, forcing a re-login.</p>
+            </div>
+            <div class="image-wrapper" style="border-radius: 50%; width: 400px; height: 400px; margin: 0 auto;">
+                 <!-- SVG: Brain/Network -->
+                 <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                     <circle cx="50" cy="50" r="40" stroke="#334155" stroke-dasharray="4 4"></circle>
+                     <path d="M35 50 L45 60 L65 40" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                     <circle cx="50" cy="50" r="48" stroke="#6366f1" stroke-opacity="0.3"></circle>
+                 </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 12: The Vault Concept (Bleed) -->
+<div class="slide-container bleed-image-layout" id="slide12">
+    <div class="content-container">
+        <h2 style="font-size: 48px; margin-bottom: 30px;">The "Vault"</h2>
+        <p>The "Vault" is a JSON object stored in <code>chrome.storage.local</code>.</p>
+        <p>It acts as an encrypted blob. Even if malicious software scans the browser's local storage files, they only see gibberish.</p>
+        <p>Only the specific extension instance with the correct password can turn this blob back into a usable private key.</p>
+    </div>
+    <div class="image-container">
+        <!-- SVG: Cube -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="#6366f1" fill="rgba(99, 102, 241, 0.05)"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="#818cf8"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12" stroke="#818cf8"></line>
+        </svg>
+    </div>
+</div>
+
+<!-- SLIDE 13: HD Wallet Implementation -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">HD Wallet Implementation</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>BIP-39 Mnemonics</h3>
+                <p>We generate a 12-word seed phrase (e.g., "witch collapse practice feed..."). This is human-readable backup that can restore the entire wallet.</p>
+            </div>
+            <div>
+                <h3>BIP-44 Derivation</h3>
+                <p>From that single seed, we derive infinite accounts using the path <code>m/44'/60'/0'/0/0</code>. This standard ensures compatibility with MetaMask and Ledger.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 14: Transaction Lifecycle -->
+<div class="slide-container" id="slide14">
+    <h2 class="slide-title">Transaction Lifecycle</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <h3>Creation</h3>
+                <p>User inputs Recipient & Amount. Gas fees estimated.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">2</div>
+                <h3>Signing</h3>
+                <p>Tx signed LOCALLY with Private Key. No internet needed.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <h3>Broadcast</h3>
+                <p>Signed hex sent to Provider via JSON-RPC.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">4</div>
+                <h3>Confirmation</h3>
+                <p>Tx mined into a block. Balance updates.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 15: Connecting to Networks -->
+<div class="slide-container" id="slide15">
+    <h2 class="slide-title">Network Management</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-ethereum"></i></div>
+                <h3>Mainnet</h3>
+                <p>The live Ethereum network. Real value. Uses Infura/Alchemy RPC endpoints for reliability.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-flask"></i></div>
+                <h3>Sepolia (Testnet)</h3>
+                <p>Safe environment for testing. We default new wallets here so users can practice without risk.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-network-wired"></i></div>
+                <h3>RPC Switching</h3>
+                <p>Dynamic provider injection allows instant switching between networks without reloading.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 16: UI/UX Design (Bleed) -->
+<div class="slide-container bleed-image-layout" id="slide16">
+    <div class="content-container">
+        <h2 style="font-size: 48px; margin-bottom: 30px;">UI/UX Philosophy</h2>
+        <p><strong>Glassmorphism:</strong> We utilize translucency and blur effects to create depth, making the wallet feel like a futuristic layer over the browser.</p>
+        <p><strong>Typography:</strong> "Inter" font provides high readability at small sizes (crucial for extension popups).</p>
+        <p><strong>Dark Mode Native:</strong> Designed for eye comfort during late-night coding or trading sessions.</p>
+    </div>
+    <div class="image-container">
+        <!-- Replaced image with CSS Glass Card -->
+        <div class="glass-card-demo">
+            <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:12px;">
+                <span>Account 1</span>
+                <span>Sepolia</span>
+            </div>
+            <div style="text-align:center; color:#fff; font-weight:700; font-size:24px;">
+                2.45 ETH
+            </div>
+            <div style="display:flex; gap:10px;">
+                 <div style="flex:1; background:#6366f1; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Send</div>
+                 <div style="flex:1; background:rgba(255,255,255,0.1); height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Receive</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 17: Animation & Interactivity -->
+<div class="slide-container" id="slide17">
+    <h2 class="slide-title">Animation & Interactivity</h2>
+    <div class="content-area">
+        <div class="two-column">
+             <div>
+                <h3>Framer Motion</h3>
+                <p>We use <strong>framer-motion</strong> for page transitions. This is not just eye candy; it provides spatial cues to the user.</p>
+                <ul>
+                    <li><strong>Slide Left/Right:</strong> Indicates navigating deeper or back in the menu hierarchy.</li>
+                    <li><strong>Micro-interactions:</strong> Buttons scale down slightly on press, providing tactile feedback.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                 <!-- SVG: Motion -->
+                 <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                    <circle cx="20" cy="50" r="10" fill="#6366f1">
+                        <animate attributeName="cx" from="20" to="80" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="80" cy="50" r="10" fill="#a855f7" opacity="0.5">
+                         <animate attributeName="cx" from="80" to="20" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 18: Live Demo Script -->
+<div class="slide-container" id="slide18">
+    <h2 class="slide-title">Live Demo: What We Will Show</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>1. Onboarding</h3>
+                <p>We will generate a fresh wallet, show the mnemonic phrase, and set a password. We will confirm the account is created.</p>
+            </div>
+            <div>
+                <h3>2. The Transaction</h3>
+                <p>We will copy the address, receive fake ETH from a faucet, and then send a transaction to a second account to demonstrate live signing.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 19: Challenges & Roadmap -->
+<div class="slide-container" id="slide19">
+    <h2 class="slide-title">Challenges & Future Roadmap</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3 style="color: #f87171;">Challenges Faced</h3>
+                <ul>
+                    <li><strong>Service Worker Sleep Cycle:</strong> Handling state when the background worker goes dormant.</li>
+                    <li><strong>Polyfill Compatibility:</strong> Making Node.js crypto libraries work in a browser extension.</li>
+                </ul>
+                <h3 style="color: #6366f1; margin-top: 30px;">Future Roadmap</h3>
+                <ul>
+                    <li><strong>ERC-20 Token Support:</strong> Auto-detection of tokens.</li>
+                    <li><strong>DApp Connection:</strong> Implementing `window.ethereum` injection for website interaction.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <!-- SVG: Roadmap -->
+                 <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 90 L30 60 L50 80 L90 20" stroke="#10b981" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="90" cy="20" r="3" fill="#10b981"/>
+                    <circle cx="10" cy="90" r="3" fill="#334155"/>
+                    <path d="M10 90 L90 90" stroke="#334155" stroke-dasharray="2 2" stroke-width="1"/>
+                    <path d="M10 20 L90 20" stroke="#334155" stroke-dasharray="2 2" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 20: Q&A / Team -->
+<div class="slide-container" id="slide20">
+    <div class="qa-layout">
+        <h2 style="font-size: 60px; margin-bottom: 20px;">Questions?</h2>
+        <p style="font-size: 24px;">Thank you for viewing EtherVault.</p>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <h4>Gopinath Panigarhi</h4>
+                <p>Blockchain & Wallet Logic</p>
+            </div>
+            <div class="team-member">
+                <h4>Omkar Bhuyan</h4>
+                <p>Extension & Network Integration</p>
+            </div>
+            <div class="team-member">
+                <h4>Aditya Ranjan Padhi</h4>
+                <p>Security & Encryption Engineer</p>
+            </div>
+             <div class="team-member">
+                <h4>Monalisa Patra</h4>
+                <p>Project Testing & Documentation</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+  
